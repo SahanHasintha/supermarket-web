@@ -1,0 +1,150 @@
+name: Simple Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Display build info
+        run: |
+          echo "✅ Build completed"
+          ls -la dist/
+          echo "Total files in dist:"
+          find dist -type f | wc -l
+      
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+          echo "✅ SSH key setup complete"
+      
+      - name: Test SSH Connection
+        run: |
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "echo '✅ SSH connection successful' && hostname && whoami"
+      
+      - name: Create deployment package
+        run: |
+          tar -czf deployment.tar.gz -C dist .
+          ls -lh deployment.tar.gz
+          echo "✅ Deployment package created"
+      
+      - name: Upload to EC2
+        run: |
+          echo "Uploading deployment package to EC2..."
+          scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no deployment.tar.gz ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/tmp/
+          echo "✅ Upload complete"
+      
+      - name: Deploy on EC2
+        run: |
+          echo "Deploying application on EC2..."
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          
+          echo "📦 Extracting deployment package..."
+          
+          # Create target directory
+          sudo mkdir -p ${{ secrets.EC2_TARGET_DIR }}
+          
+          # Backup existing files
+          if [ -d "${{ secrets.EC2_TARGET_DIR }}/backup" ]; then
+            echo "Removing old backup..."
+            sudo rm -rf ${{ secrets.EC2_TARGET_DIR }}/backup
+          fi
+          
+          if [ "$(ls -A ${{ secrets.EC2_TARGET_DIR }} 2>/dev/null)" ]; then
+            echo "Creating backup of current deployment..."
+            sudo mkdir -p ${{ secrets.EC2_TARGET_DIR }}/backup
+            sudo cp -r ${{ secrets.EC2_TARGET_DIR }}/* ${{ secrets.EC2_TARGET_DIR }}/backup/ 2>/dev/null || true
+          fi
+          
+          # Remove old files (except backup)
+          echo "Clearing old deployment..."
+          sudo find ${{ secrets.EC2_TARGET_DIR }} -mindepth 1 -maxdepth 1 ! -name 'backup' -exec rm -rf {} + 2>/dev/null || true
+          
+          # Extract new files
+          echo "Extracting new deployment..."
+          sudo tar -xzf /tmp/deployment.tar.gz -C ${{ secrets.EC2_TARGET_DIR }}/
+          
+          # Set ownership and permissions
+          echo "Setting permissions..."
+          sudo chown -R www-data:www-data ${{ secrets.EC2_TARGET_DIR }}
+          sudo chmod -R 755 ${{ secrets.EC2_TARGET_DIR }}
+          
+          # Clean up
+          rm /tmp/deployment.tar.gz
+          
+          # Restart Nginx
+          echo "Restarting Nginx..."
+          sudo systemctl restart nginx
+          
+          # Verify
+          echo "Verifying deployment..."
+          ls -lh ${{ secrets.EC2_TARGET_DIR }}/ | head -10
+          
+          # Check Nginx status
+          if sudo systemctl is-active --quiet nginx; then
+            echo "✅ Nginx is running"
+          else
+            echo "❌ Nginx failed to start"
+            exit 1
+          fi
+          
+          # Display file count
+          FILE_COUNT=$(find ${{ secrets.EC2_TARGET_DIR }} -type f | wc -l)
+          echo "✅ Deployed $FILE_COUNT files"
+          
+          # Show deployment time
+          echo "Deployment timestamp: $(date)"
+          
+          EOF
+      
+      - name: Verify Website Accessibility
+        run: |
+          echo "Waiting for Nginx to stabilize..."
+          sleep 3
+          echo "Testing website accessibility..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }})
+          echo "HTTP Response Code: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Website is accessible!"
+          else
+            echo "⚠️  Warning: Website returned $HTTP_CODE"
+          fi
+      
+      - name: Deployment Summary
+        run: |
+          echo "════════════════════════════════════════"
+          echo "✅ DEPLOYMENT COMPLETED SUCCESSFULLY!"
+          echo "════════════════════════════════════════"
+          echo "🌐 Website URL: http://${{ secrets.EC2_HOST }}"
+          echo "📁 Deploy Location: ${{ secrets.EC2_TARGET_DIR }}"
+          echo "⏰ Deployment Time: $(date)"
+          echo "════════════════════════════════════════"
+          echo ""
+          echo "💡 TIP: If you don't see changes:"
+          echo "   1. Open in Incognito/Private window"
+          echo "   2. Or do Hard Refresh: Ctrl+Shift+R (Cmd+Shift+R on Mac)"
+          echo "   3. Or clear browser cache completely"
+
