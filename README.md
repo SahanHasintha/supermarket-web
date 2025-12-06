@@ -101,3 +101,4 @@ The following pages will be created:
 
 This project is private and proprietary.
 
+# supermarket-web
