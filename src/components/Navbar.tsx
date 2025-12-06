@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
               </div>
               <div className="hidden sm:block">
                 <span className="text-2xl bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent" style={{ fontFamily: "'Pacifico', cursive" }}>
-                  Wynnum Mini Supermarket
+                  Wynnum Mini
                 </span>
                 <div className="h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
