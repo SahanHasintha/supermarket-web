@@ -1,0 +1,94 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Triggers on push to main branch
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Create deployment archive
+        run: |
+          cd dist
+          tar -czf ../dist.tar.gz .
+          cd ..
+      
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Add EC2 to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy to EC2
+        run: |
+          # Upload the archive
+          scp dist.tar.gz ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/tmp/
+          
+          # Extract and deploy on EC2
+          ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+            # Create target directory if it doesn't exist
+            sudo mkdir -p ${{ secrets.EC2_TARGET_DIR }}
+            
+            # Backup current deployment
+            if [ -d "${{ secrets.EC2_TARGET_DIR }}/backup" ]; then
+              sudo rm -rf ${{ secrets.EC2_TARGET_DIR }}/backup
+            fi
+            if [ "$(ls -A ${{ secrets.EC2_TARGET_DIR }})" ]; then
+              sudo mkdir -p ${{ secrets.EC2_TARGET_DIR }}/backup
+              sudo cp -r ${{ secrets.EC2_TARGET_DIR }}/* ${{ secrets.EC2_TARGET_DIR }}/backup/ 2>/dev/null || true
+            fi
+            
+            # Clear current deployment (except backup)
+            sudo find ${{ secrets.EC2_TARGET_DIR }} -mindepth 1 -maxdepth 1 ! -name 'backup' -exec rm -rf {} +
+            
+            # Extract new deployment
+            sudo tar -xzf /tmp/dist.tar.gz -C ${{ secrets.EC2_TARGET_DIR }}/
+            
+            # Set permissions
+            sudo chown -R www-data:www-data ${{ secrets.EC2_TARGET_DIR }}
+            sudo chmod -R 755 ${{ secrets.EC2_TARGET_DIR }}
+            
+            # Clean up
+            rm /tmp/dist.tar.gz
+            
+            # Restart Nginx
+            sudo systemctl restart nginx
+            
+            # Verify Nginx is running
+            sudo systemctl status nginx --no-pager
+          ENDSSH
+      
+      - name: Verify deployment
+        run: |
+          echo "Checking if website is accessible..."
+          sleep 5
+          curl -I http://${{ secrets.EC2_HOST }} || echo "Warning: Could not verify deployment"
+      
+      - name: Deployment complete
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Website: http://${{ secrets.EC2_HOST }}"
+
