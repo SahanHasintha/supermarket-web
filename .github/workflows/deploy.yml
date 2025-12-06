@@ -33,12 +33,9 @@ jobs:
           cd ..
       
       - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/deploy_key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       
       - name: Add EC2 to known hosts
         run: |
@@ -48,10 +45,10 @@ jobs:
       - name: Deploy to EC2
         run: |
           # Upload the archive
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no dist.tar.gz ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/tmp/
+          scp dist.tar.gz ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/tmp/
           
           # Extract and deploy on EC2
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             # Create target directory if it doesn't exist
             sudo mkdir -p ${{ secrets.EC2_TARGET_DIR }}
             
