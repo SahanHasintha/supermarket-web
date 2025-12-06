@@ -89,7 +89,7 @@ const Welcome: React.FC = () => {
           {/* Header Text */}
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-emerald-800 mb-3">
-              Your Neighborhood Favorite
+              🎯 CI/CD Test - Your Neighborhood Favorite
             </h2>
             <p className="text-lg md:text-xl text-gray-600">
               Fresh products, friendly service, everyday!
