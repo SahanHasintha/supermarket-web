@@ -18,8 +18,8 @@ const Navbar: React.FC = () => {
   };
 
   const navLinks = [
-    { name: 'Welcome', path: '/' },
-    { name: 'Home', path: '/home' },
+    // { name: 'Welcome', path: '/' }, // Hidden - Welcome page is disabled
+    { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
   ];

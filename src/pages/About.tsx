@@ -10,7 +10,7 @@ const About: React.FC = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=2084&auto=format&fit=crop')`,
+            backgroundImage: `url('/about_us_image02.jpg')`,
           }}
         >
           {/* Dark overlay for text readability */}

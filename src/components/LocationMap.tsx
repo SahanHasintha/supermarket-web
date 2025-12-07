@@ -5,11 +5,11 @@ const LocationMap: React.FC = () => {
     <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
       <div className="p-6 bg-gradient-to-r from-emerald-500 to-teal-500">
         <h3 className="text-2xl font-bold text-white text-center">Our Location</h3>
-        <p className="text-emerald-100 text-center mt-2">123 Wynnum Street, Wynnum QLD 4178, Australia</p>
+        <p className="text-emerald-100 text-center mt-2">188 Algester Rd, Calamvale QLD 4116</p>
       </div>
       <div className="relative w-full h-96">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3540.614087831842!2d153.16640931506164!3d-27.444129982866865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b915a1d1db3e1b9%3A0x502a35af3de8920!2sWynnum%20QLD%204178%2C%20Australia!5e0!3m2!1sen!2s!4v1234567890123!5m2!1sen!2s"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3526.7969773845945!2d153.0346847!3d-27.8161111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b9140e1c2a3e88f%3A0xf017d68f9f1a7f0!2s188%20Algester%20Rd%2C%20Calamvale%20QLD%204116!5e0!3m2!1sen!2sau!4v1234567890123!5m2!1sen!2sau"
           width="100%"
           height="100%"
           style={{ border: 0 }}
