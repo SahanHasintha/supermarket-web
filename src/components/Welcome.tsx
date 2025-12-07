@@ -5,178 +5,157 @@ const Welcome: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen overflow-hidden">
-      {/* Left Half - Image with Overlay Text */}
-      <div className="relative w-full md:w-1/2 h-[50vh] md:h-screen">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2070&auto=format&fit=crop')`,
-          }}
-        >
-          {/* Dark overlay for better text visibility */}
-          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-          
-        </div>
-        
-        {/* Single Curved Divider */}
-        <div className="hidden md:block absolute top-0 right-0 bottom-0 w-16 overflow-visible z-20" style={{ transform: 'translateX(1px)' }}>
-          <svg 
-            className="absolute top-0 left-0 h-full w-full" 
-            viewBox="0 0 100 1000" 
-            preserveAspectRatio="none"
-          >
-            <path 
-              d="M 0 0 C 60 250, 60 750, 0 1000 L 100 1000 L 100 0 Z" 
-              fill="rgba(236, 253, 245, 1)"
-            />
-          </svg>
-        </div>
-        
-        {/* Overlay Text with Cloud-like Gradient */}
-        <div className="relative z-10 h-full flex items-center justify-center p-4 sm:p-6 md:p-12">
-          <div className="relative inline-block">
-            {/* Cloud-like spreading gradient background */}
-            <div 
-              className="absolute -left-8 -top-6 -right-10 -bottom-8 sm:-left-12 sm:-top-10 sm:-right-16 sm:-bottom-12 md:-left-20 md:-top-16 md:-right-24 md:-bottom-16"
-              style={{
-                background: 'radial-gradient(ellipse 120% 100% at 30% 50%, rgba(22, 101, 52, 0.9) 0%, rgba(34, 197, 94, 0.6) 35%, rgba(134, 239, 172, 0.3) 70%, transparent 100%)',
-                filter: 'blur(20px)',
-                borderRadius: '60% 40% 55% 45% / 50% 60% 40% 50%',
-              }}
-            ></div>
-            <div 
-              className="absolute -left-6 -top-4 -right-8 -bottom-6 sm:-left-8 sm:-top-6 sm:-right-12 sm:-bottom-8 md:-left-16 md:-top-12 md:-right-20 md:-bottom-14"
-              style={{
-                background: 'radial-gradient(ellipse 110% 90% at 40% 50%, rgba(22, 101, 52, 0.7) 0%, rgba(34, 197, 94, 0.4) 40%, rgba(134, 239, 172, 0.2) 75%, transparent 100%)',
-                filter: 'blur(15px)',
-                borderRadius: '50% 60% 45% 55% / 60% 45% 55% 40%',
-              }}
-            >            </div>
-            <div className="relative flex flex-col items-center">
-              <img 
-                src="/Market logo.png" 
-                alt="Wynnum Mini Supermarket Logo" 
-                className="h-16 sm:h-20 md:h-28 lg:h-36 w-auto object-contain mb-4 sm:mb-6 md:mb-8 drop-shadow-2xl animate-zoomIn"
-              />
-              <h1 
-                className="relative text-white leading-tight drop-shadow-2xl text-center"
-                style={{ 
-                  fontFamily: "'Ubuntu', sans-serif", 
-                  fontWeight: 500, 
-                  fontStyle: 'italic',
-                  textShadow: '2px 2px 8px rgba(0, 0, 0, 0.7), 0 0 15px rgba(22, 101, 52, 0.5)'
-                }}
-              >
-                <span className="block text-3xl sm:text-4xl md:text-6xl lg:text-8xl mb-1 sm:mb-2">Welcome !</span>
-                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-6xl">Wynnum Mini</span>
-                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-6xl">Supermarket</span>
-              </h1>
-            </div>
-          </div>
-        </div>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Full Screen Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2070&auto=format&fit=crop')`,
+        }}
+      >
+        {/* Gradient overlay for better contrast */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-emerald-900/50"></div>
       </div>
 
-      {/* Right Half - Navigation Options */}
-      <div className="relative w-full md:w-1/2 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 p-6 sm:p-8 md:p-16 md:pl-24 min-h-[50vh] md:min-h-screen">
+      {/* Decorative floating elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      </div>
+
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-12">
         
-        {/* Decorative circles for visual interest */}
-        <div className="absolute top-10 right-10 w-40 h-40 bg-emerald-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-60 h-60 bg-teal-200/20 rounded-full blur-3xl"></div>
-        
-        <div className="relative w-full max-w-md z-10">
-          {/* Header Text */}
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-800 mb-2 sm:mb-3 px-2">
-              Your Neighborhood Favorite
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 px-2">
-              Fresh products, friendly service, everyday!
-            </p>
-          </div>
+        {/* Main Card with enhanced styling */}
+        <div 
+          className="relative rounded-[50px] p-6 sm:p-8 md:p-10 max-w-3xl w-full animate-zoomIn overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(240, 240, 240, 0.65) 50%, rgba(255, 255, 255, 0.7) 100%)',
+            boxShadow: '0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 150px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            border: '2px solid rgba(255, 255, 255, 0.6)',
+            backdropFilter: 'blur(10px)',
+          }}
+        >
+          {/* Decorative corner elements with glow */}
+          <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 via-emerald-300/10 to-transparent rounded-br-full blur-sm"></div>
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-blue-400/20 via-blue-300/10 to-transparent rounded-tl-full blur-sm"></div>
           
-          <div className="space-y-4 sm:space-y-6 md:space-y-8">
-          {/* Home Option */}
-          <div className="group cursor-pointer animate-slideInLeft animate-delay-100" onClick={() => navigate('/home')}>
-            <div 
-              className="relative overflow-hidden bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-5 sm:p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              style={{
-                clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">Home</h2>
-                  <p className="text-emerald-100 text-xs sm:text-sm">Explore our store</p>
-                </div>
-                <svg 
-                  className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transform group-hover:translate-x-2 transition-transform duration-300 flex-shrink-0" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          {/* Top edge highlight */}
+          <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"></div>
+          
+          {/* Side accent lines */}
+          <div className="absolute left-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-emerald-300/30 to-transparent"></div>
+          <div className="absolute right-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent"></div>
+          
+          {/* Logo Container with enhanced styling */}
+          <div className="relative flex justify-center mb-7 z-10">
+            <div className="relative group">
+              {/* Multi-layer glow effect */}
+              <div className="absolute -inset-2 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-3xl blur-2xl opacity-25 group-hover:opacity-40 transition-all duration-500 animate-pulse"></div>
+              <div className="absolute -inset-1 bg-gradient-to-tr from-blue-400 to-emerald-400 rounded-3xl blur-lg opacity-20 group-hover:opacity-35 transition-all duration-500"></div>
+              
+              {/* Logo box with advanced styling */}
+              <div 
+                className="relative bg-white rounded-3xl p-6 transform transition-all duration-300 group-hover:scale-105"
+                style={{
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 60px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1)',
+                  border: '2px solid rgba(16, 185, 129, 0.2)',
+                }}
+              >
+                <img 
+                  src="/Market logo.png" 
+                  alt="Wynnum Mini Supermarket Logo" 
+                  className="h-20 sm:h-24 md:h-28 w-auto object-contain relative z-10"
+                />
               </div>
             </div>
           </div>
 
-          {/* About Option */}
-          <div className="group cursor-pointer animate-slideInRight animate-delay-300" onClick={() => navigate('/about')}>
-            <div 
-              className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 text-white p-5 sm:p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              style={{
-                clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
+          {/* Welcome Text with enhanced typography */}
+          <div className="text-center mb-8 relative" style={{ fontFamily: "'Roboto', sans-serif" }}>
+            <h1 
+              className="leading-tight"
+              style={{ 
+                fontFamily: "'Roboto', sans-serif",
               }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">About</h2>
-                  <p className="text-blue-100 text-xs sm:text-sm">Learn about us</p>
-                </div>
-                <svg 
-                  className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transform group-hover:translate-x-2 transition-transform duration-300 flex-shrink-0" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
+              <span className="block text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-3 tracking-tight" 
+                style={{ 
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+                  fontWeight: 700
+                }}>
+                Welcome !
+              </span>
+              <span className="block text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800 mb-1 tracking-wide">
+                Wynnum
+              </span>
+              <span className="block text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800 tracking-wide">
+                Mini Supermarket
+              </span>
+            </h1>
           </div>
 
-          {/* Services Option */}
-          <div className="group cursor-pointer animate-slideInLeft animate-delay-500" onClick={() => navigate('/services')}>
-            <div 
-              className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-purple-600 text-white p-5 sm:p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              style={{
-                clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
-              }}
+          {/* Navigation Buttons - Enhanced Design */}
+          <div className="relative flex flex-col sm:flex-row gap-5 justify-center items-center mt-7 z-10">
+            
+            {/* Home Button */}
+            <button
+              onClick={() => navigate('/home')}
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center gap-3 justify-center border-2 border-emerald-400/50 w-full sm:w-56"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">Services</h2>
-                  <p className="text-purple-100 text-xs sm:text-sm">What we offer</p>
-                </div>
-                <svg 
-                  className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transform group-hover:translate-x-2 transition-transform duration-300 flex-shrink-0" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              
+              <div className="relative bg-white/25 rounded-full p-2 group-hover:bg-white/35 transition-colors duration-300">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
-            </div>
+              <span className="text-xl font-bold">Home</span>
+            </button>
+
+            {/* About Button */}
+            <button
+              onClick={() => navigate('/about')}
+              className="group relative overflow-hidden bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-white px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center gap-3 justify-center border-2 border-blue-400/50 w-full sm:w-56"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              
+              <div className="relative bg-white/25 rounded-full p-2 group-hover:bg-white/35 transition-colors duration-300">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span className="text-xl font-bold">About</span>
+            </button>
+
+            {/* Services Button */}
+            <button
+              onClick={() => navigate('/services')}
+              className="group relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 text-white px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center gap-3 justify-center border-2 border-purple-400/50 w-full sm:w-56"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              
+              <div className="relative bg-white/25 rounded-full p-2 group-hover:bg-white/35 transition-colors duration-300">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <span className="text-xl font-bold">Services</span>
+            </button>
+
           </div>
         </div>
-        </div>
+
       </div>
     </div>
   );
 };
 
 export default Welcome;
-
